@@ -19,7 +19,11 @@ const points = Array.from({ length: 5 }, (_, i) => {
   };
 });
 
-export default function StarCanvas() {
+export default function StarCanvas({
+  onComplete,
+}: {
+  onComplete?: (startLabel: string) => void;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawPoints, setDrawPoints] = useState<{ x: number; y: number }[]>([]);
   const [selectedVertices, setSelectedVertices] = useState<number[]>([]);
@@ -190,6 +194,15 @@ export default function StarCanvas() {
   const handlePointerUp = () => {
     setIsDrawing(false);
     setHoverVertex(null);
+
+    if (
+      selectedVertices.length === 6 &&
+      selectedVertices[0] === selectedVertices[selectedVertices.length - 1]
+    ) {
+      const startIndex = selectedVertices[0];
+      const label = labels[startIndex];
+      onComplete?.(label);
+    }
   };
 
   return (

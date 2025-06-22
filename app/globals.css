@@ -2,8 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 기존 배경 설정 */
 body {
   @apply bg-cover bg-center bg-no-repeat;
   background-image: url('/background.png');
   min-height: 100vh;
+}
+
+/* 둥둥 떠다니는 애니메이션 */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 1.7s ease-in-out infinite;
 }
