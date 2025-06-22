@@ -20,9 +20,13 @@ const points = Array.from({ length: 5 }, (_, i) => {
 });
 
 export default function StarCanvas({
+  drawState,
+  setDrawState,
   onComplete,
 }: {
-  onComplete?: (startLabel: string) => void;
+  drawState: 'initial' | 'drawing' | 'completed';
+  setDrawState: (state: 'initial' | 'drawing' | 'completed') => void;
+  onComplete?: (startLabel: string) => void; // ✅ 여기를 추가
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawPoints, setDrawPoints] = useState<{ x: number; y: number }[]>([]);
@@ -67,7 +71,6 @@ export default function StarCanvas({
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // 점선 가이드 (별 형태)
     const guide = [0, 2, 4, 1, 3, 0];
     ctx.beginPath();
     ctx.setLineDash([20, 12]);
@@ -80,7 +83,6 @@ export default function StarCanvas({
     ctx.lineWidth = 10;
     ctx.stroke();
 
-    // 사용자 드로잉
     if (drawPoints.length > 1) {
       ctx.beginPath();
       ctx.setLineDash([]);
@@ -94,7 +96,6 @@ export default function StarCanvas({
       ctx.stroke();
     }
 
-    // 꼭짓점
     points.forEach(({ x, y }, i) => {
       const isSelected = selectedVertices.includes(i);
       const radius = isSelected ? 14 : 8;
@@ -103,7 +104,7 @@ export default function StarCanvas({
       ctx.translate(x, y);
 
       if (isSelected) {
-        ctx.rotate(angle); // 회전 애니메이션
+        ctx.rotate(angle);
       }
 
       ctx.beginPath();
@@ -115,7 +116,6 @@ export default function StarCanvas({
       ctx.restore();
     });
 
-    // 별 완성 후 라벨 표시
     const isComplete =
       selectedVertices.length >= 6 &&
       selectedVertices[0] === selectedVertices[selectedVertices.length - 1];
@@ -123,7 +123,7 @@ export default function StarCanvas({
     if (isComplete) {
       points.forEach(({ x, y }, i) => {
         const angle = (i * 72 - 162 + ROTATION_ANGLE) * (Math.PI / 180);
-        const offset = 20; // 꼭짓점에서 얼마나 떨어질지
+        const offset = 20;
         const labelX = x + offset * Math.cos(angle);
         const labelY = y + offset * Math.sin(angle);
 
@@ -152,6 +152,7 @@ export default function StarCanvas({
   };
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (drawState !== 'drawing') return;
     const { x, y } = getCanvasCoordinates(e);
     for (let i = 0; i < points.length; i++) {
       if (isNear(x, y, points[i])) {
@@ -165,6 +166,7 @@ export default function StarCanvas({
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (drawState !== 'drawing') return;
     const { x, y } = getCanvasCoordinates(e);
     if (!isDrawing) {
       for (let i = 0; i < points.length; i++) {
@@ -192,6 +194,7 @@ export default function StarCanvas({
   };
 
   const handlePointerUp = () => {
+    if (drawState !== 'drawing') return;
     setIsDrawing(false);
     setHoverVertex(null);
 
@@ -199,9 +202,12 @@ export default function StarCanvas({
       selectedVertices.length === 6 &&
       selectedVertices[0] === selectedVertices[selectedVertices.length - 1]
     ) {
+      setDrawState('completed');
+
       const startIndex = selectedVertices[0];
       const label = labels[startIndex];
-      onComplete?.(label);
+
+      onComplete?.(label); // ✅ 이 줄이 핵심
     }
   };
 
