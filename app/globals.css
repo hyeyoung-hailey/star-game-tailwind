@@ -23,3 +23,18 @@ body {
 .animate-float {
   animation: float 1.7s ease-in-out infinite;
 }
+
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUpFade 0.9s ease-out forwards;
+}
