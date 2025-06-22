@@ -155,6 +155,38 @@ export default function Home() {
         </div>
       </div>
 
+      {/* 오베레이 이후 콘텐츠 */}
+      {overlayVisible && (
+        <>
+          <div className="w-full text-center mt-6 sm:mt-10 absolute top-20 z-20">
+            <h1 className="text-base sm:text-lg font-semibold text-white">
+              {startLabel === 'A' && '추천 아이템 : Music Note Star-Back Black'}
+              {startLabel === 'B' && '추천 아이템 : Striped Star-Back Blue'}
+              {startLabel === 'C' &&
+                '추천 아이템 : Broken SHUE Star-Back White'}
+              {startLabel === 'D' && '추천 아이템 : Clione SHU Star-Back Grey'}
+              {startLabel === 'E' && '추천 아이템 : Cross Belt Star-Back Grey'}
+              {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') &&
+                '추천 아이템 : Star-Back Grey'}
+            </h1>
+          </div>
+          {/* 서브 메시지 (하단) */}
+          <div className="absolute bottom-56 w-full text-center z-20 text-white text-sm sm:text-xs leading-snug">
+            <p>당신의 스타일에 맞춘 수영복 추천과</p>
+            <p>15% 할인 + 랜덤 선물의 기회도 받아가세요!</p>
+          </div>
+          <div className="absolute bottom-44 w-full text-center z-20 text-white text-xs sm:text-[10px] leading-snug">
+            <p>*별을 완성하면 추천 수영복이 나타나요</p>
+            <p>*랜덤 선물은 기간 내 참여 시 제공됩니다</p>
+          </div>
+          <div className="absolute bottom-28 w-full text-center z-20">
+            <button className="bg-[#3A538B] text-white font-bold px-6 py-3 rounded-lg">
+              플친 추가하고 꽝없는 선물 뽑기
+            </button>
+          </div>
+        </>
+      )}
+
       {/* 오버레이 */}
       {overlayVisible && (
         <div className="absolute inset-0 z-10 pointer-events-none animate-fade-in">
