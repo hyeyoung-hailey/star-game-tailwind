@@ -6,21 +6,35 @@ import StarCanvas from './components/StarCanvas';
 
 type DrawingState = 'initial' | 'drawing' | 'completed';
 
+// 기본 퍼센트 값 (API 실패 시 사용)
+const DEFAULT_PERCENTS: Record<string, number> = {
+  A: 22,
+  B: 25,
+  C: 18,
+  D: 20,
+  E: 15,
+};
+
 export default function Home() {
   const [drawState, setDrawState] = useState<DrawingState>('initial');
   const [startLabel, setStartLabel] = useState<string | null>(null);
   const [backgroundSwitched, setBackgroundSwitched] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
 
+  const [percent, setPercent] = useState<number | null>(null);
+
+  const isCompleteReady =
+    drawState === 'completed' && startLabel !== null && percent !== null;
+
   useEffect(() => {
     if (drawState === 'completed') {
       const backgroundTimer = setTimeout(() => {
         setBackgroundSwitched(true);
-      }, 1500);
+      }, 5500);
 
       const overlayTimer = setTimeout(() => {
         setOverlayVisible(true);
-      }, 2500);
+      }, 5500);
 
       return () => {
         clearTimeout(backgroundTimer);
@@ -30,16 +44,15 @@ export default function Home() {
       setBackgroundSwitched(false);
       setOverlayVisible(false);
     }
-  }, [drawState]);
+  }, [drawState, startLabel, percent]);
 
-  const message =
-    drawState === 'initial'
-      ? '너는 별, 어떻게 그려?'
-      : drawState === 'drawing'
-      ? '당신만의 스타일을 그릴 시간이에요'
-      : startLabel
-      ? `당신의 스타일은 ${startLabel}에서 시작했어요`
-      : '당신의 스타일을 그릴 시간이에요';
+  const message = (() => {
+    if (drawState === 'initial') return '너는 별, 어떻게 그려?';
+    if (drawState === 'drawing') return '당신만의 스타일을 그릴 시간이에요';
+    if (isCompleteReady)
+      return `${startLabel}에서 시작했어요. 전체 중 ${percent}%가 이 별을 선택했어요`;
+    return '';
+  })();
 
   return (
     <main className="relative min-h-screen flex flex-col items-center px-2 py-6 text-white overflow-hidden">
@@ -71,7 +84,25 @@ export default function Home() {
           <StarCanvas
             drawState={drawState}
             setDrawState={setDrawState}
-            onComplete={(label) => setStartLabel(label)}
+            onComplete={async (label) => {
+              try {
+                const res = await fetch('/api/submit-vote', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ selected: label }),
+                });
+                const result = await res.json();
+
+                setStartLabel(label);
+                setPercent(result.percent || DEFAULT_PERCENTS[label] || 20);
+                setDrawState('completed');
+              } catch (e) {
+                console.error('투표 저장 실패:', e);
+                setStartLabel(label);
+                setPercent(DEFAULT_PERCENTS[label] || 20);
+                setDrawState('completed');
+              }
+            }}
           />
         </div>
 
@@ -133,12 +164,6 @@ export default function Home() {
                 <>
                   <p>실용적이지만 절대 평범하진 않죠.</p>
                   <p>선택에도 기준이 확실한 타입!</p>
-                </>
-              )}
-              {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') && (
-                <>
-                  <p>두근두근 ..</p>
-                  <p>당신의 별이 완성됐어요!</p>
                 </>
               )}
             </div>
