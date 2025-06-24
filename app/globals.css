@@ -50,6 +50,6 @@ body {
   }
 
   .animate-fade-in {
-    animation: fadeIn 1.6s ease-out forwards;
+    animation: fadeIn 2.6s ease-out forwards;
   }
 }
