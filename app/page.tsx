@@ -6,35 +6,21 @@ import StarCanvas from './components/StarCanvas';
 
 type DrawingState = 'initial' | 'drawing' | 'completed';
 
-// 기본 퍼센트 값 (API 실패 시 사용)
-const DEFAULT_PERCENTS: Record<string, number> = {
-  A: 22,
-  B: 25,
-  C: 18,
-  D: 20,
-  E: 15,
-};
-
 export default function Home() {
   const [drawState, setDrawState] = useState<DrawingState>('initial');
   const [startLabel, setStartLabel] = useState<string | null>(null);
   const [backgroundSwitched, setBackgroundSwitched] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
 
-  const [percent, setPercent] = useState<number | null>(null);
-
-  const isCompleteReady =
-    drawState === 'completed' && startLabel !== null && percent !== null;
-
   useEffect(() => {
     if (drawState === 'completed') {
       const backgroundTimer = setTimeout(() => {
         setBackgroundSwitched(true);
-      }, 5500);
+      }, 1500);
 
       const overlayTimer = setTimeout(() => {
         setOverlayVisible(true);
-      }, 5500);
+      }, 2500);
 
       return () => {
         clearTimeout(backgroundTimer);
@@ -44,15 +30,16 @@ export default function Home() {
       setBackgroundSwitched(false);
       setOverlayVisible(false);
     }
-  }, [drawState, startLabel, percent]);
+  }, [drawState]);
 
-  const message = (() => {
-    if (drawState === 'initial') return '너는 별, 어떻게 그려?';
-    if (drawState === 'drawing') return '당신만의 스타일을 그릴 시간이에요';
-    if (isCompleteReady)
-      return `${startLabel}에서 시작했어요. 전체 중 ${percent}%가 이 별을 선택했어요`;
-    return '';
-  })();
+  const message =
+    drawState === 'initial'
+      ? '너는 별, 어떻게 그려?'
+      : drawState === 'drawing'
+      ? '당신만의 스타일을 그릴 시간이에요'
+      : startLabel
+      ? `당신의 스타일은 ${startLabel}에서 시작했어요`
+      : '당신의 스타일을 그릴 시간이에요';
 
   return (
     <main className="relative min-h-screen flex flex-col items-center px-2 py-6 text-white overflow-hidden">
@@ -84,25 +71,7 @@ export default function Home() {
           <StarCanvas
             drawState={drawState}
             setDrawState={setDrawState}
-            onComplete={async (label) => {
-              try {
-                const res = await fetch('/api/submit-vote', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ selected: label }),
-                });
-                const result = await res.json();
-
-                setStartLabel(label);
-                setPercent(result.percent || DEFAULT_PERCENTS[label] || 20);
-                setDrawState('completed');
-              } catch (e) {
-                console.error('투표 저장 실패:', e);
-                setStartLabel(label);
-                setPercent(DEFAULT_PERCENTS[label] || 20);
-                setDrawState('completed');
-              }
-            }}
+            onComplete={(label) => setStartLabel(label)}
           />
         </div>
 
@@ -166,6 +135,12 @@ export default function Home() {
                   <p>선택에도 기준이 확실한 타입!</p>
                 </>
               )}
+              {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') && (
+                <>
+                  <p>두근두근 ..</p>
+                  <p>당신의 별이 완성됐어요!</p>
+                </>
+              )}
             </div>
           )}
 
@@ -188,21 +163,57 @@ export default function Home() {
               {startLabel === 'A' && '추천 아이템 : Music Note Star-Back Black'}
               {startLabel === 'B' && '추천 아이템 : Striped Star-Back Blue'}
               {startLabel === 'C' &&
-                '추천 아이템 : Broken SHUE Star-Back White'}
-              {startLabel === 'D' && '추천 아이템 : Clione SHU Star-Back Grey'}
-              {startLabel === 'E' && '추천 아이템 : Cross Belt Star-Back Grey'}
+                '추천 아이템 : Broken SHU Star-Back / White'}
+              {startLabel === 'D' &&
+                '추천 아이템 : Clione SHU Star-Back / Grey'}
+              {startLabel === 'E' &&
+                '추천 아이템 : Cross Belt Star-Back / Grey'}
               {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') &&
                 '추천 아이템 : Star-Back Grey'}
             </h1>
           </div>
           {/* 서브 메시지 (하단) */}
           <div className="absolute bottom-56 w-full text-center z-20 text-white text-sm sm:text-xs leading-snug">
-            <p>당신의 스타일에 맞춘 수영복 추천과</p>
-            <p>15% 할인 + 랜덤 선물의 기회도 받아가세요!</p>
+            {startLabel === 'A' && (
+              <>
+                <p>절제된 블랙 톤에 미니멀한 컷.</p>
+                <p>스타☆백 디테일이 조용하게 스며들어요.</p>
+              </>
+            )}
+            {startLabel === 'B' && (
+              <>
+                <p>탄탐한 기능성 소재와 스타☆백 스타일의 조합으로</p>
+                <p>심플하지만 뒷모습은 강렬한 핏 완성.</p>
+              </>
+            )}
+            {startLabel === 'C' && (
+              <>
+                <p>귀여운 아트워크와 스타☆백 디테일.</p>
+                <p>무심한 듯 귀여운 스윔웨어 연출에 딱.</p>
+              </>
+            )}
+            {startLabel === 'D' && (
+              <>
+                <p>핏, 색감. 디테일 다 잡은 스타일리시 수영복.</p>
+                <p>어께에서 떨어지는 스타☆백 스트랩이 포인트.</p>
+              </>
+            )}
+            {startLabel === 'E' && (
+              <>
+                <p>리버시블 착용이 가능한 하이브리드 아이템.</p>
+                <p>실내에서도, 해변에서도 스타☆백디테일로 시그니처 완성!</p>
+              </>
+            )}
+            {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') && (
+              <>
+                <p>절제된 블랙 톤에 미니멀한 컷.</p>
+                <p>스타☆백 디테일이 조용하게 스며들어요.</p>
+              </>
+            )}
           </div>
           <div className="absolute bottom-44 w-full text-center z-20 text-white text-xs sm:text-[10px] leading-snug">
-            <p>*별을 완성하면 추천 수영복이 나타나요</p>
-            <p>*랜덤 선물은 기간 내 참여 시 제공됩니다</p>
+            <p>결과지를 캡쳐 후 SNS에 공유하면(@noitow_official)</p>
+            <p>오프라인 팝업에서 추천상품을 15% 할인해드려요!</p>
           </div>
           <div className="absolute bottom-28 w-full text-center z-20">
             <button className="bg-[#3A538B] text-white font-bold px-6 py-3 rounded-lg">
