@@ -9,6 +9,8 @@ type DrawingState = 'initial' | 'drawing' | 'completed';
 export default function Home() {
   const [drawState, setDrawState] = useState<DrawingState>('initial');
   const [startLabel, setStartLabel] = useState<string | null>(null);
+  const [percent, setPercent] = useState<number>(0);
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
   const [backgroundSwitched, setBackgroundSwitched] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
 
@@ -16,11 +18,11 @@ export default function Home() {
     if (drawState === 'completed') {
       const backgroundTimer = setTimeout(() => {
         setBackgroundSwitched(true);
-      }, 1500);
+      }, 2500); // 1.5초 -> 3초로 증가
 
       const overlayTimer = setTimeout(() => {
         setOverlayVisible(true);
-      }, 2500);
+      }, 3800); // 2.5초 -> 5초로 증가
 
       return () => {
         clearTimeout(backgroundTimer);
@@ -37,8 +39,10 @@ export default function Home() {
       ? '너는 별, 어떻게 그려?'
       : drawState === 'drawing'
       ? '당신만의 스타일을 그릴 시간이에요'
-      : startLabel
-      ? `당신의 스타일은 ${startLabel}에서 시작했어요`
+      : drawState === 'completed' && isLoadingStats
+      ? '결과를 분석중이에요...'
+      : drawState === 'completed' && startLabel
+      ? `${percent}% 사람이 ${startLabel}을 선택했어요`
       : '당신의 스타일을 그릴 시간이에요';
 
   return (
@@ -71,7 +75,34 @@ export default function Home() {
           <StarCanvas
             drawState={drawState}
             setDrawState={setDrawState}
-            onComplete={(label) => setStartLabel(label)}
+            onComplete={async (label) => {
+              setIsLoadingStats(true);
+              try {
+                const response = await fetch('/api/submit-vote', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ selected: label }),
+                });
+
+                if (response.ok) {
+                  const data = await response.json();
+                  setStartLabel(label);
+                  setPercent(data.percent);
+                } else {
+                  console.error('투표 저장 실패');
+                  setStartLabel(label);
+                  setPercent(20); // 기본값
+                }
+              } catch (error) {
+                console.error('투표 저장 중 오류:', error);
+                setStartLabel(label);
+                setPercent(20); // 기본값
+              } finally {
+                setIsLoadingStats(false);
+              }
+            }}
           />
         </div>
 
@@ -133,12 +164,6 @@ export default function Home() {
                 <>
                   <p>실용적이지만 절대 평범하진 않죠.</p>
                   <p>선택에도 기준이 확실한 타입!</p>
-                </>
-              )}
-              {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') && (
-                <>
-                  <p>두근두근 ..</p>
-                  <p>당신의 별이 완성됐어요!</p>
                 </>
               )}
             </div>
@@ -216,9 +241,15 @@ export default function Home() {
             <p>오프라인 팝업에서 추천상품을 15% 할인해드려요!</p>
           </div>
           <div className="absolute bottom-28 w-full text-center z-20">
-            <button className="bg-[#3A538B] text-white font-bold px-6 py-3 rounded-lg">
-              플친 추가하고 꽝없는 선물 뽑기
-            </button>
+            <a
+              href="https://pf.kakao.com/_mxnxefn/friend"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button className="bg-[#3A538B] text-white font-bold px-6 py-3 rounded-lg">
+                플친 추가하고 꽝없는 선물 뽑기
+              </button>
+            </a>
           </div>
         </>
       )}
@@ -226,11 +257,48 @@ export default function Home() {
       {/* 오버레이 */}
       {overlayVisible && (
         <div className="absolute inset-0 z-10 pointer-events-none animate-fade-in">
-          <img
-            src="/end-bg.png"
-            alt="Star Overlay"
-            className="w-full h-full object-cover"
-          />
+          {startLabel === 'A' && (
+            <img
+              src="/end-A.png"
+              alt="Star Overlay A"
+              className="w-full h-full object-cover"
+            />
+          )}
+          {startLabel === 'B' && (
+            <img
+              src="/end-B.png"
+              alt="Star Overlay B"
+              className="w-full h-full object-cover"
+            />
+          )}
+          {startLabel === 'C' && (
+            <img
+              src="/end-C.png"
+              alt="Star Overlay C"
+              className="w-full h-full object-cover"
+            />
+          )}
+          {startLabel === 'D' && (
+            <img
+              src="/end-D.png"
+              alt="Star Overlay D"
+              className="w-full h-full object-cover"
+            />
+          )}
+          {startLabel === 'E' && (
+            <img
+              src="/end-E.png"
+              alt="Star Overlay E"
+              className="w-full h-full object-cover"
+            />
+          )}
+          {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') && (
+            <img
+              src="/end-A.png"
+              alt="Star Overlay Default"
+              className="w-full h-full object-cover"
+            />
+          )}
         </div>
       )}
     </main>
