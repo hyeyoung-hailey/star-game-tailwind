@@ -71,7 +71,7 @@ export default function Home() {
         </div>
 
         {/* 별 그리기 */}
-        <div className="mt-4 sm:mt-8">
+        <div className="mt-2 sm:mt-8">
           <StarCanvas
             drawState={drawState}
             setDrawState={setDrawState}
@@ -107,7 +107,7 @@ export default function Home() {
         </div>
 
         {/* 상품 + 안내 + 버튼 */}
-        <div className="flex flex-col items-center w-full mt-8 space-y-3 max-[375px]:mt-4 max-[375px]:space-y-2">
+        <div className="flex flex-col items-center w-full space-y-3 max-[375px]:mt-4 max-[375px]:space-y-2">
           <img
             src="/prize2.png"
             alt="Prizes"
