@@ -46,7 +46,10 @@ export default function Home() {
       : '당신의 스타일을 그릴 시간이에요';
 
   return (
-    <main className="relative min-h-screen flex flex-col items-center px-2 py-6 text-white overflow-hidden">
+    <main
+      className="relative min-h-screen flex flex-col items-center px-2 py-6 text-white overflow-hidden"
+      style={{ minHeight: '100dvh' }}
+    >
       {/* 로고 */}
       <div className="mt-1 self-start ml-2 z-30">
         <Image
