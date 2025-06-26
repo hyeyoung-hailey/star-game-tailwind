@@ -212,7 +212,7 @@ export default function StarCanvas({
   };
 
   return (
-    <div className="w-full flex justify-center items-start pt-4">
+    <div className="w-full flex justify-center items-start pt-2">
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}
@@ -220,7 +220,7 @@ export default function StarCanvas({
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        className="bg-transparent touch-none w-full max-w-[480px]"
+        className="bg-transparent touch-none w-full max-w-[400px] max-[375px]:max-w-[320px]"
       />
     </div>
   );
