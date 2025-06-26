@@ -160,6 +160,10 @@ export default function StarCanvas({
         setSelectedVertices([i]);
         setHoverVertex(i);
         setIsDrawing(true);
+
+        // ⭐ 바로 한 번 move 효과 적용
+        setDrawPoints((prev) => [...prev, { x, y }]);
+
         return;
       }
     }
