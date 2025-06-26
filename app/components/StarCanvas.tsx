@@ -211,7 +211,7 @@ export default function StarCanvas({
       const startIndex = selectedVertices[0];
       const label = labels[startIndex];
 
-      onComplete?.(label); // ✅ 이 줄이 핵심
+      onComplete?.(label);
     }
   };
 
