@@ -259,42 +259,42 @@ export default function Home() {
         <div className="absolute inset-0 z-10 pointer-events-none animate-fade-in">
           {startLabel === 'A' && (
             <img
-              src="/sm-end-A.png"
+              src="/sm-end-A.webp"
               alt="Star Overlay A"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'B' && (
             <img
-              src="/sm-end-B.png"
+              src="/sm-end-B.webp"
               alt="Star Overlay B"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'C' && (
             <img
-              src="/sm-end-C.png"
+              src="/sm-end-C.webp"
               alt="Star Overlay C"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'D' && (
             <img
-              src="/sm-end-D.png"
+              src="/sm-end-D.webp"
               alt="Star Overlay D"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'E' && (
             <img
-              src="/sm-end-E.png"
+              src="/sm-end-E.webp"
               alt="Star Overlay E"
               className="w-full h-full object-cover"
             />
           )}
           {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') && (
             <img
-              src="/sm-end-A.png"
+              src="/sm-end-A.webp"
               alt="Star Overlay Default"
               className="w-full h-full object-cover"
             />
