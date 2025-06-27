@@ -49,7 +49,7 @@ export default function StarCanvas({
   }, []);
 
   const isNear = (x: number, y: number, pt: { x: number; y: number }) =>
-    Math.hypot(pt.x - x, pt.y - y) <= 15;
+    Math.hypot(pt.x - x, pt.y - y) <= 35; // 15에서 25로 증가
 
   const isCyclicEqual = (ref: number[], input: number[]) => {
     const refCore = ref.slice(0, -1);
