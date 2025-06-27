@@ -67,11 +67,11 @@ export default function Home() {
       >
         {/* 메시지 */}
         <div className="w-full text-center mt-4 sm:mt-4">
-          <h1 className="text-lg sm:text-xl font-semibold">{message}</h1>
+          <h1 className="text-base sm:text-lg font-semibold">{message}</h1>
         </div>
 
         {/* 별 그리기 */}
-        <div className="sm:mt-4">
+        <div className="mt-1 sm:mt-4">
           <StarCanvas
             drawState={drawState}
             setDrawState={setDrawState}

@@ -71,7 +71,7 @@ export default function Home() {
         </div>
 
         {/* 별 그리기 */}
-        <div className="sm:mt-4">
+        <div className="m sm:mt-4">
           <StarCanvas
             drawState={drawState}
             setDrawState={setDrawState}

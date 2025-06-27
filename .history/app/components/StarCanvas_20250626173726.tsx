@@ -92,7 +92,7 @@ export default function StarCanvas({
         ctx.lineTo(drawPoints[i].x, drawPoints[i].y);
       }
       ctx.strokeStyle = 'white';
-      ctx.lineWidth = 8;
+      ctx.lineWidth = 4;
       ctx.stroke();
     }
 
@@ -211,7 +211,7 @@ export default function StarCanvas({
       const startIndex = selectedVertices[0];
       const label = labels[startIndex];
 
-      onComplete?.(label); //
+      onComplete?.(label); // ✅ 이 줄이 핵심
     }
   };
 

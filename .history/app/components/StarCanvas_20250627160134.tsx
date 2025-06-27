@@ -80,7 +80,7 @@ export default function StarCanvas({
       ctx.lineTo(points[guide[i]].x, points[guide[i]].y);
     }
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 25;
     ctx.stroke();
 
     if (drawPoints.length > 1) {
@@ -92,7 +92,7 @@ export default function StarCanvas({
         ctx.lineTo(drawPoints[i].x, drawPoints[i].y);
       }
       ctx.strokeStyle = 'white';
-      ctx.lineWidth = 8;
+      ctx.lineWidth = 4;
       ctx.stroke();
     }
 

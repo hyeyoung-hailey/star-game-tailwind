@@ -92,7 +92,7 @@ export default function StarCanvas({
         ctx.lineTo(drawPoints[i].x, drawPoints[i].y);
       }
       ctx.strokeStyle = 'white';
-      ctx.lineWidth = 8;
+      ctx.lineWidth = 4;
       ctx.stroke();
     }
 

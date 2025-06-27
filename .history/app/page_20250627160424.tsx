@@ -107,7 +107,7 @@ export default function Home() {
         </div>
 
         {/* 상품 + 안내 + 버튼 */}
-        <div className="flex flex-col items-center w-full mt-2 space-y-2 max-[375px]:mt-1 max-[375px]:space-y-1">
+        <div className="flex flex-col items-center w-full mt-1 space-y-2 max-[375px]:mt-1 max-[375px]:space-y-1">
           <img
             src="/prize2.png"
             alt="Prizes"

@@ -66,12 +66,12 @@ export default function Home() {
         }`}
       >
         {/* 메시지 */}
-        <div className="w-full text-center mt-4 sm:mt-4">
-          <h1 className="text-lg sm:text-xl font-semibold">{message}</h1>
+        <div className="w-full text-center mt-3 sm:mt-4">
+          <h1 className="text-base sm:text-lg font-semibold">{message}</h1>
         </div>
 
         {/* 별 그리기 */}
-        <div className="sm:mt-4">
+        <div className="mt-2 sm:mt-4">
           <StarCanvas
             drawState={drawState}
             setDrawState={setDrawState}
@@ -207,7 +207,7 @@ export default function Home() {
             )}
             {startLabel === 'B' && (
               <>
-                <p>탄탄한 기능성 소재와 스타☆백 스타일의 조합으로</p>
+                <p>탄탐한 기능성 소재와 스타☆백 스타일의 조합으로</p>
                 <p>심플하지만 뒷모습은 강렬한 핏 완성.</p>
               </>
             )}
