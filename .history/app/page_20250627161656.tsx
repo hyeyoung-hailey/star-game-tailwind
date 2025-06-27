@@ -120,13 +120,12 @@ export default function Home() {
 
         {/* 상품 + 안내 + 버튼 */}
         <div className="flex flex-col items-center w-full mt-2 space-y-2 max-[375px]:mt-1 max-[375px]:space-y-1">
-          {(drawState === 'initial' || drawState === 'drawing') && (
-            <img
-              src="/prize2.png"
-              alt="Prizes"
-              className="w-full object-contain animate-float max-[375px]:max-h-[80px] max-h-[120px]"
-            />
-          )}
+          <img
+            src="/prize2.png"
+            alt="Prizes"
+            className="w-full object-contain animate-float max-[375px]:max-h-[80px] max-h-[120px]"
+          />
+
           <div className="text-[14px] leading-[1.3] text-center text-white font-medium flex flex-col max-[375px]:text-[12px]">
             {drawState === 'initial' && (
               <>
@@ -253,14 +252,14 @@ export default function Home() {
             <p>결과지를 캡쳐 후 SNS에 공유하면(@noitow_official)</p>
             <p>오프라인 팝업에서 추천상품을 15% 할인해드려요!</p>
           </div>
-          <div className="absolute bottom-24 w-full text-center z-20">
+          <div className="absolute bottom-28 w-full text-center z-20">
             <a
               href="https://pf.kakao.com/_mxnxefn/friend"
               target="_blank"
               rel="noopener noreferrer"
             >
               <button className="bg-[#3A538B] text-white font-bold px-6 py-3 rounded-lg">
-                채널 추가하고 꽝없는 선물도 받기
+                플친 추가하고 꽝없는 선물 뽑기
               </button>
             </a>
           </div>

@@ -76,7 +76,7 @@ export default function StarCanvas({
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
     ctx.lineWidth = 10;
     ctx.lineCap = 'round';
-
+    
     for (let i = 0; i < guide.length - 1; i++) {
       ctx.beginPath();
       ctx.setLineDash([15, 15]);

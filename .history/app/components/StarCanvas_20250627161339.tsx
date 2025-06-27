@@ -71,19 +71,17 @@ export default function StarCanvas({
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // 가이드 라인을 각 선분별로 개별 그리기
     const guide = [0, 2, 4, 1, 3, 0];
+    ctx.beginPath();
+    ctx.setLineDash([20, 12]);
+    ctx.lineCap = 'butt';
+    ctx.moveTo(points[guide[0]].x, points[guide[0]].y);
+    for (let i = 1; i < guide.length; i++) {
+      ctx.lineTo(points[guide[i]].x, points[guide[i]].y);
+    }
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
     ctx.lineWidth = 10;
-    ctx.lineCap = 'round';
-
-    for (let i = 0; i < guide.length - 1; i++) {
-      ctx.beginPath();
-      ctx.setLineDash([15, 15]);
-      ctx.moveTo(points[guide[i]].x, points[guide[i]].y);
-      ctx.lineTo(points[guide[i + 1]].x, points[guide[i + 1]].y);
-      ctx.stroke();
-    }
+    ctx.stroke();
 
     if (drawPoints.length > 1) {
       ctx.beginPath();

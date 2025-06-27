@@ -120,13 +120,14 @@ export default function Home() {
 
         {/* 상품 + 안내 + 버튼 */}
         <div className="flex flex-col items-center w-full mt-2 space-y-2 max-[375px]:mt-1 max-[375px]:space-y-1">
-          {(drawState === 'initial' || drawState === 'drawing') && (
-            <img
-              src="/prize2.png"
-              alt="Prizes"
-              className="w-full object-contain animate-float max-[375px]:max-h-[80px] max-h-[120px]"
-            />
-          )}
+          {drawState === 'initial' ||
+            ('drawing' && (
+              <img
+                src="/prize2.png"
+                alt="Prizes"
+                className="w-full object-contain animate-float max-[375px]:max-h-[80px] max-h-[120px]"
+              />
+            ))}
           <div className="text-[14px] leading-[1.3] text-center text-white font-medium flex flex-col max-[375px]:text-[12px]">
             {drawState === 'initial' && (
               <>
