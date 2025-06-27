@@ -13,24 +13,34 @@ export default function Home() {
   const [isLoadingStats, setIsLoadingStats] = useState(false);
   const [backgroundSwitched, setBackgroundSwitched] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [showPersonality, setShowPersonality] = useState(false);
 
   useEffect(() => {
     if (drawState === 'completed') {
+      // 1단계: 결과 표시 (1.5초 후)
+      const resultTimer = setTimeout(() => {
+        setShowPersonality(true);
+      }, 1500);
+
+      // 2단계: 배경 페이드아웃 (5초 후)
       const backgroundTimer = setTimeout(() => {
         setBackgroundSwitched(true);
-      }, 2500); // 1.5초 -> 3초로 증가
+      }, 4100);
 
+      // 3단계: 오버레이 표시 (5.5초 후)
       const overlayTimer = setTimeout(() => {
         setOverlayVisible(true);
-      }, 3000); // 2.5초 -> 5초로 증가
+      }, 4500);
 
       return () => {
+        clearTimeout(resultTimer);
         clearTimeout(backgroundTimer);
         clearTimeout(overlayTimer);
       };
     } else {
       setBackgroundSwitched(false);
       setOverlayVisible(false);
+      setShowPersonality(false);
     }
   }, [drawState]);
 
@@ -41,8 +51,10 @@ export default function Home() {
       ? '당신만의 스타일을 그릴 시간이에요'
       : drawState === 'completed' && isLoadingStats
       ? '결과를 분석중이에요...'
-      : drawState === 'completed' && startLabel
+      : drawState === 'completed' && showPersonality && startLabel
       ? `${percent}% 사람이 ${startLabel}을 선택했어요`
+      : drawState === 'completed'
+      ? '결과를 분석중이에요...'
       : '당신의 스타일을 그릴 시간이에요';
 
   return (
@@ -66,8 +78,8 @@ export default function Home() {
         }`}
       >
         {/* 메시지 */}
-        <div className="w-full text-center mt-4 sm:mt-4">
-          <h1 className="text-lg sm:text-xl font-semibold">{message}</h1>
+        <div className="w-full text-center mt-3 sm:mt-4">
+          <h1 className="text-base sm:text-lg font-semibold">{message}</h1>
         </div>
 
         {/* 별 그리기 */}
@@ -127,44 +139,44 @@ export default function Home() {
                 <span>순서대로 연결하면 완성됩니다.</span>
               </>
             )}
-            {drawState === 'completed' && (
-              <>
+            {drawState === 'completed' && showPersonality && (
+              <div className="animate-fade-in">
                 <span>추천 제품 15% 할인 + 랜덤 선물뽑기권 당첨!</span>
-              </>
+              </div>
             )}
           </div>
 
-          {drawState === 'completed' && (
-            <div className="mt-1 text-[15px] text-white font-bold text-center max-[375px]:text-[11px] animate-slide-up leading-snug">
+          {drawState === 'completed' && showPersonality && (
+            <div className="mt-1 text-[15px] text-white font-bold text-center max-[375px]:text-[11px] leading-snug">
               {startLabel === 'A' && (
-                <>
+                <div className="animate-fade-in">
                   <p>다 말하지 않아도 전해지는 분위기.</p>
                   <p>당신은 묵직한 존재감의 소유자예요</p>
-                </>
+                </div>
               )}
               {startLabel === 'B' && (
-                <>
+                <div className="animate-fade-in">
                   <p>실력도 스타일도 빠짐없는 완성형.</p>
                   <p>어딜가나 자연스럽게 중심점이 되는 타입</p>
-                </>
+                </div>
               )}
               {startLabel === 'C' && (
-                <>
+                <div className="animate-fade-in">
                   <p>분위기 반전 장인.</p>
                   <p>귀엽다가 멋있고, 평범한 듯 독특해요.</p>
-                </>
+                </div>
               )}
               {startLabel === 'D' && (
-                <>
+                <div className="animate-fade-in">
                   <p>친구들 사이에선 늘 눈에 띄는 사람.</p>
                   <p>'꾸안꾸' 스타일링 고수예요</p>
-                </>
+                </div>
               )}
               {startLabel === 'E' && (
-                <>
+                <div className="animate-fade-in">
                   <p>실용적이지만 절대 평범하진 않죠.</p>
                   <p>선택에도 기준이 확실한 타입!</p>
-                </>
+                </div>
               )}
             </div>
           )}
@@ -259,42 +271,42 @@ export default function Home() {
         <div className="absolute inset-0 z-10 pointer-events-none animate-fade-in">
           {startLabel === 'A' && (
             <img
-              src="/sm-end-A.png"
+              src="/sm-end-A.webp"
               alt="Star Overlay A"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'B' && (
             <img
-              src="/sm-end-B.png"
+              src="/sm-end-B.webp"
               alt="Star Overlay B"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'C' && (
             <img
-              src="/sm-end-C.png"
+              src="/sm-end-C.webp"
               alt="Star Overlay C"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'D' && (
             <img
-              src="/sm-end-D.png"
+              src="/sm-end-D.webp"
               alt="Star Overlay D"
               className="w-full h-full object-cover"
             />
           )}
           {startLabel === 'E' && (
             <img
-              src="/sm-end-E.png"
+              src="/sm-end-E.webp"
               alt="Star Overlay E"
               className="w-full h-full object-cover"
             />
           )}
           {!['A', 'B', 'C', 'D', 'E'].includes(startLabel || '') && (
             <img
-              src="/sm-end-A.png"
+              src="/sm-end-A.webp"
               alt="Star Overlay Default"
               className="w-full h-full object-cover"
             />

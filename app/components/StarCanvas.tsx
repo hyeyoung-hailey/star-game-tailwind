@@ -26,7 +26,7 @@ export default function StarCanvas({
 }: {
   drawState: 'initial' | 'drawing' | 'completed';
   setDrawState: (state: 'initial' | 'drawing' | 'completed') => void;
-  onComplete?: (startLabel: string) => void; // ✅ 여기를 추가
+  onComplete?: (startLabel: string) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawPoints, setDrawPoints] = useState<{ x: number; y: number }[]>([]);
@@ -211,7 +211,7 @@ export default function StarCanvas({
       const startIndex = selectedVertices[0];
       const label = labels[startIndex];
 
-      onComplete?.(label); //
+      onComplete?.(label); // ✅ 이 줄이 핵심
     }
   };
 
