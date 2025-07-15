@@ -304,7 +304,7 @@ export default function Home() {
             )}
             {startLabel === 'E' && (
               <img
-                src="/overlay-E.webp"
+                src="/overlay-E2.webp"
                 alt="Star Overlay E"
                 className="w-full h-full object-cover"
               />
