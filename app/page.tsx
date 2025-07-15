@@ -23,15 +23,15 @@ export default function Home() {
         setShowPersonality(true);
       }, 1500);
 
-      // 2단계: 배경 페이드아웃 (5초 후)
+      // 2단계: 배경 페이드아웃 (5.2초 후)
       const backgroundTimer = setTimeout(() => {
         setBackgroundSwitched(true);
-      }, 4100);
+      }, 5200);
 
-      // 3단계: 오버레이 표시 (5.5초 후)
+      // 3단계: 오버레이 표시 (5.7초 후)
       const overlayTimer = setTimeout(() => {
         setOverlayVisible(true);
-      }, 4500);
+      }, 5700);
 
       return () => {
         clearTimeout(resultTimer);
